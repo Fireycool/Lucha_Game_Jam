@@ -62,6 +62,8 @@ public class Base : MonoBehaviour
         //Salto del Jugador
         JumpPlayer();
 
+        ParryPlayer();
+
     }
 
     void FixedUpdate()
@@ -69,7 +71,6 @@ public class Base : MonoBehaviour
         CheckGround();
         CheckJump();
         CheckFall();
-
 
         //Movimiento Izquierda y Derecha del Jugador
         MovePlayer();
@@ -102,10 +103,18 @@ public class Base : MonoBehaviour
     }
 
     void JumpPlayer() {
-        if(Mathf.Abs(yInput) > 0 && grounded) {
-            body.velocity = new Vector2(body.velocity.x, yInput * JUMP_VELOCITY);            
+        if(Input.GetButtonDown("Jump") && grounded) {
+            body.velocity = new Vector2(body.velocity.x, JUMP_VELOCITY);            
         }       
-    }     
+    }
+
+    void ParryPlayer()
+    {
+        if (Input.GetButtonDown("Fire1") && grounded)
+        {
+            body.velocity = new Vector2(body.velocity.x, JUMP_VELOCITY);
+        }
+    }
 
     void CheckGround(){
         grounded = Physics2D.OverlapAreaAll(groundCheck.bounds.min, groundCheck.bounds.max, groundMask).Length > 0;
