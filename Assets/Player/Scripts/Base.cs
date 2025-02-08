@@ -67,9 +67,15 @@ public class Base : MonoBehaviour
         if(parry){
             ParryRead();
         }
+        else{
+            parryHitbox.enabled = false;
+            parry_count = PARRY_TIME;
+            parryHitbox.enabled = false;
+        }
 
 
         if (grounded){
+            parry = false;
             parried = false;
             parriable = true;
 
@@ -147,7 +153,6 @@ public class Base : MonoBehaviour
             parry_count -= 0.1F;
             if (parry_count <= 0){
                 parry = false;
-                parry_count = PARRY_TIME;
             }
         }
     }
