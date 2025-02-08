@@ -430,6 +430,10 @@ MonoBehaviour:
   groundMask:
     serializedVersion: 2
     m_Bits: 128
+  parryHitbox: {fileID: 6476020212331402623}
+  enemyMask:
+    serializedVersion: 2
+    m_Bits: 512
   SPEED: 5
   ACCELERATION: 0.5
   FRICTION: 0.5
@@ -442,13 +446,14 @@ MonoBehaviour:
   WALL_JUMP_PUSHBACK: 3
   INPUT_BUFFER_PATIENCE: 0.1
   COYOTE_TIME: 0.8
-  PARRY_TIME: 0
-  PARRY_BOUNCE: 10
+  PARRY_TIME: 10
+  PARRY_BOUNCE: 12
   grounded: 0
   walking: 0
   jumping: 0
   falling: 0
   walled: 0
   parry: 0
+  parriable: 0
   parried: 0
   damaged: 0

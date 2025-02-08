@@ -8,7 +8,8 @@ public class Base : MonoBehaviour
     [SerializeField] Rigidbody2D body;
     [SerializeField] BoxCollider2D groundCheck;
     [SerializeField] LayerMask groundMask;
-
+    [SerializeField] CircleCollider2D parryHitbox;
+    [SerializeField] LayerMask enemyMask;
 
     [SerializeField] float SPEED;
     [SerializeField] float ACCELERATION;
@@ -30,17 +31,16 @@ public class Base : MonoBehaviour
     [SerializeField] float PARRY_TIME;
     [SerializeField] float PARRY_BOUNCE;
     
-    
-    public bool grounded;
-    public bool walking;
-    public bool jumping;
-    public bool falling;
-    public bool walled;
-    public bool parry;
-    public bool parried;
-    public bool damaged;
-
-
+    public float parry_count;
+    public bool grounded = false;
+    public bool walking = false;
+    public bool jumping = false;
+    public bool falling = false;
+    public bool walled = false;
+    public bool parry = false;
+    public bool parriable = false;
+    public bool parried = false;
+    public bool damaged = false;
     
     float xInput; 
     float yInput;
@@ -63,7 +63,22 @@ public class Base : MonoBehaviour
         JumpPlayer();
 
         ParryPlayer();
+        
+        if(parry){
+            ParryRead();
+        }
 
+
+        if (grounded){
+            parried = false;
+            parriable = true;
+
+            body.rotation = 0;
+        }
+
+        if (parried){
+            body.rotation += 10;
+        }
     }
 
     void FixedUpdate()
@@ -104,15 +119,36 @@ public class Base : MonoBehaviour
 
     void JumpPlayer() {
         if(Input.GetButtonDown("Jump") && grounded) {
-            body.velocity = new Vector2(body.velocity.x, JUMP_VELOCITY);            
+            body.velocity = new Vector2(body.velocity.x, JUMP_VELOCITY);      
+
         }       
     }
 
     void ParryPlayer()
     {
-        if (Input.GetButtonDown("Fire1") && grounded)
+        if (!grounded && Input.GetButtonDown("Fire1"))
         {
-            body.velocity = new Vector2(body.velocity.x, JUMP_VELOCITY);
+            parry = true;
+            parriable = false;
+            parryHitbox.enabled = true;
+            parry_count = PARRY_TIME;
+        }
+    }
+
+    void ParryRead()
+    {
+        if (parry && Physics2D.OverlapAreaAll(parryHitbox.bounds.min, parryHitbox.bounds.max, enemyMask).Length > 0)
+        {
+            body.velocity = new Vector2(body.velocity.x, PARRY_BOUNCE);           
+            parried = true;
+            parry = false;
+        }
+        else{
+            parry_count -= 0.1F;
+            if (parry_count <= 0){
+                parry = false;
+                parry_count = PARRY_TIME;
+            }
         }
     }
 
