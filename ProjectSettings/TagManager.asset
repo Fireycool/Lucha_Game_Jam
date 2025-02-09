@@ -4,6 +4,9 @@
 TagManager:
   serializedVersion: 2
   tags:
+  - PuntoFinal
+  - Segmento
+  tags:
   - Audio
   layers:
   - Default
