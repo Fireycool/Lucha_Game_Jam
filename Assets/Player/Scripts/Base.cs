@@ -6,7 +6,10 @@ using UnityEngine;
 public class Base : MonoBehaviour
 {
     [SerializeField] Rigidbody2D body;
+    [SerializeField] Transform sprite;
     [SerializeField] BoxCollider2D groundCheck;
+    [SerializeField] BoxCollider2D wallCheck;
+
     [SerializeField] LayerMask groundMask;
     [SerializeField] CircleCollider2D parryHitbox;
     [SerializeField] LayerMask enemyMask;
@@ -19,9 +22,11 @@ public class Base : MonoBehaviour
     [SerializeField] float FRICTION;
     [Range(0f,1f)]
     [SerializeField] float AIR_FRICTION;
+    [Range(0f,2f)]
     [SerializeField] float GRAVITY;
     [SerializeField] float FALL_GRAVITY;
     [SerializeField] float FAST_FALL_GRAVITY;
+        [Range(0f,1f)]
     [SerializeField] float WALL_GRAVITY;
 
     [SerializeField] float JUMP_VELOCITY;
@@ -64,6 +69,8 @@ public class Base : MonoBehaviour
         //Salto del Jugador
         JumpPlayer();
 
+        WallJumpPlayer();
+
         ParryPlayer();
         
         if(parry){
@@ -96,7 +103,23 @@ public class Base : MonoBehaviour
     {
         CheckGround();
         CheckJump();
-        CheckFall();
+        CheckWall();
+        if (!walled){
+            CheckFall();
+        }
+
+        if (!grounded){
+            
+            if (body.velocity.y > 1){
+                body.velocity -= new Vector2(0,get_grav());
+            }
+            else if (body.velocity.y <= 1 && body.velocity.y > 0){
+                body.velocity -= new Vector2(0,get_grav()/2);
+            }
+            else if (body.velocity.y <= 0){
+                body.velocity -= new Vector2(0,get_grav()*2);
+            }
+        }
 
         //Movimiento Izquierda y Derecha del Jugador
         MovePlayer();
@@ -137,6 +160,14 @@ public class Base : MonoBehaviour
         }       
     }
 
+    
+    void WallJumpPlayer() {
+        float direction = -Mathf.Sign(xInput);
+        if(Input.GetButtonDown("Jump") && walled) {
+            body.velocity = new Vector2((body.velocity.x + WALL_JUMP_PUSHBACK)* direction, JUMP_VELOCITY);      
+        }       
+    }
+
     void ParryPlayer()
     {
         if (!grounded && Input.GetButtonDown("Fire1") && parriable)
@@ -152,6 +183,7 @@ public class Base : MonoBehaviour
     {
         if (parry && Physics2D.OverlapAreaAll(parryHitbox.bounds.min, parryHitbox.bounds.max, enemyMask).Length > 0)
         {
+            FindObjectOfType<HitSTop>().Stop(0.1F);
             body.velocity = new Vector2(body.velocity.x, PARRY_BOUNCE);           
             parried = true;
             parry = false;
@@ -168,6 +200,17 @@ public class Base : MonoBehaviour
         grounded = Physics2D.OverlapAreaAll(groundCheck.bounds.min, groundCheck.bounds.max, groundMask).Length > 0;
     }
 
+    void CheckWall(){
+        if (grounded)
+            walled = false;
+        else
+            walled = Physics2D.OverlapAreaAll(wallCheck.bounds.min, wallCheck.bounds.max, groundMask).Length > 0;
+            
+        if(walled && !jumping && !grounded && !parry){
+            animator.Play("Slide");
+        }
+    }
+
     void CheckJump(){
         if(body.velocity.y > 0 && !grounded){
             jumping = true;
@@ -180,13 +223,23 @@ public class Base : MonoBehaviour
     }
 
     void CheckFall(){
-        if(body.velocity.y < 0 && !grounded){
+        if(body.velocity.y < 0 && !grounded ){
             falling = true;
-            if (!parried && !parry) 
+            if (!parried && !parry && !walled) 
                 animator.Play("Down");
         }
         else{
             falling = false;
         }    
+    }
+
+    float get_grav(){
+        if (walled && body.velocity.y <= 0){
+            return WALL_GRAVITY;
+        }
+        else
+        {
+            return GRAVITY;
+        }
     }
 }
