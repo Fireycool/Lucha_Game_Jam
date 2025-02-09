@@ -494,14 +494,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   partesNivel:
-  - {fileID: 8460704359624297107, guid: 9433d13c3f3aa0c4d97943b07ee23eb9, type: 3}
   - {fileID: 8134568245698283719, guid: 853043f5af796554a9c69ff42aeb9628, type: 3}
+  - {fileID: 8134568245698283719, guid: 613cd9ab47a31a84683e89461fc182a6, type: 3}
+  - {fileID: 8460704359624297107, guid: 9433d13c3f3aa0c4d97943b07ee23eb9, type: 3}
+  - {fileID: 8460704359624297107, guid: 7916354b7e4fb7c459849eed8bd50091, type: 3}
   - {fileID: 1307737915114036790, guid: 10d727f7354659f4e85d202b97d75380, type: 3}
+  - {fileID: 1307737915114036790, guid: 76ca995b5483fd845ab58248d6bc6ddd, type: 3}
   - {fileID: 8449975541768164998, guid: 63a680e2b5935d0429a5a235cefe5033, type: 3}
+  - {fileID: 8449975541768164998, guid: 899d3a5486689954db2c45b3bf90180d, type: 3}
   distanciaMinima: 15
   puntoFinal: {fileID: 716850236}
   cantidadInicial: 3
   distanciaDestruccion: 50
+  bg1: {fileID: 0}
+  bg2: {fileID: 0}
 --- !u!4 &1240527016
 Transform:
   m_ObjectHideFlags: 0

@@ -2220,7 +2220,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0be111c8f1bb00b43a5fe92f5c2ae6fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  puntosPatrol: []
+  puntosPatrol:
+  - {fileID: 202141202113799237}
+  - {fileID: 8362095728421645170}
   moveSpeed: 2
   Destino: 0
 --- !u!70 &-5279103672952333471
