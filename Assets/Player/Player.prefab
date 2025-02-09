@@ -774,6 +774,12 @@ MonoBehaviour:
   parriable: 0
   parried: 0
   damaged: 0
+  maxHealth: 3
+  health: 0
+  KBForce: 4
+  KBCounter: 0
+  KBTime: 0.1
+  KnockFromRight: 0
 --- !u!114 &5267851568908371183
 MonoBehaviour:
   m_ObjectHideFlags: 0
