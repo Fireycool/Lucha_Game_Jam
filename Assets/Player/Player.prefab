@@ -774,6 +774,10 @@ MonoBehaviour:
   parriable: 0
   parried: 0
   damaged: 0
+  score: 0
+  combo: 0
+  basecomboTime: 300
+  comboTime: 0
   maxHealth: 3
   health: 0
   KBForce: 4

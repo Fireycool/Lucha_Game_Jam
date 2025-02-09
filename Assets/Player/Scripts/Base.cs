@@ -56,6 +56,16 @@ public class Base : MonoBehaviour
     float xInput; 
     float yInput;
 
+    public float score;
+
+    public int combo;
+    public int basecomboTime;
+    public Combo_Bar_script combobar;
+    public Scoreboard scorebord;
+    public Combo_Board combom;
+
+    public int comboTime;
+
     public int maxHealth = 3;
     public int health;
 
@@ -70,6 +80,11 @@ public class Base : MonoBehaviour
     {
         sfxManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<SFX_Manager>();
         health = maxHealth;
+        score = 0;
+        combo = 0;
+        combobar.SetMaxTimer(basecomboTime);
+        scorebord.SetScore(score);
+        combom.SetCombo(combo);
     }
 
     // Update is called once per frame
@@ -121,9 +136,12 @@ public class Base : MonoBehaviour
 
     void FixedUpdate()
     {
+        DecreaseCombo();
+        IncreaseScore();
         CheckGround();
         CheckJump();
         CheckWall();
+        
         if (!walled){
             CheckFall();
         }
@@ -230,6 +248,7 @@ public class Base : MonoBehaviour
             }
             slamming = true;
             animator.Play("Slam");
+
         }
     }
 
@@ -242,6 +261,7 @@ public class Base : MonoBehaviour
             body.velocity = new Vector2(body.velocity.x, PARRY_BOUNCE);           
             parried = true;
             parry = false;
+            IncreaseCombo();
             
         }
         else{
@@ -321,5 +341,39 @@ public class Base : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+
+    void DecreaseCombo(){
+        if(comboTime > 0){
+            --comboTime;
+        }
+        else{
+            combo = 0;
+        }
+        combobar.SetTimeLeft(comboTime);
+        combom.SetCombo(combo);
+    }
+
+    void IncreaseCombo(){
+        if(combo < 60){
+            if(combo <= 0){
+            combo = 2;
+        }
+        else{
+            combo *= 2;
+        }
+        }
+        
+        comboTime = basecomboTime;
+    }
+
+    void IncreaseScore(){
+        if (combo > 0){
+            score += 0.01f*combo;
+        }
+        else{
+            score += 0.01f;
+        }
+        scorebord.SetScore(score);
     }
 }
