@@ -6,6 +6,8 @@ public class PinhataAttack : MonoBehaviour
 {
     public int damage = 1;
     public Base playerMovement;
+    public Transform playerTransform;
+
     // Start is called before the first frame update
     private void OnCollisionEnter2D(Collision2D collision)
     { 
@@ -21,6 +23,14 @@ public class PinhataAttack : MonoBehaviour
                 playerMovement.KnockFromRight = false;
             }
             playerMovement.TakeDamage(damage);
+        }
+    }
+
+    void Update()
+    {
+        if(playerMovement.parried == true && Vector2.Distance(transform.position, playerTransform.position) <= 2)
+        {
+            Destroy(gameObject);
         }
     }
 }
