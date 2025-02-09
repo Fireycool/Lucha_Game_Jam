@@ -37,6 +37,8 @@ public class Base : MonoBehaviour
 
     [SerializeField] float PARRY_TIME;
     [SerializeField] float PARRY_BOUNCE;
+
+    SFX_Manager sfxManager;
     
     public float parry_count;
     public bool grounded = false;
@@ -56,22 +58,23 @@ public class Base : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        sfxManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<SFX_Manager>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        // Recibe el Input del jugador
-        GetInput();
+        // Controles del Jugador
+        if (Time.timeScale > 0){
+            GetInput();
 
+            JumpPlayer();
 
-        //Salto del Jugador
-        JumpPlayer();
+            WallJumpPlayer();
 
-        WallJumpPlayer();
+            ParryPlayer();
+        }
 
-        ParryPlayer();
         
         if(parry){
             ParryRead();
@@ -156,7 +159,8 @@ public class Base : MonoBehaviour
 
     void JumpPlayer() {
         if(Input.GetButtonDown("Jump") && grounded) {
-            body.velocity = new Vector2(body.velocity.x, JUMP_VELOCITY);      
+            body.velocity = new Vector2(body.velocity.x, JUMP_VELOCITY);
+            sfxManager.PlaySFX(sfxManager.jump);
         }       
     }
 
@@ -164,7 +168,8 @@ public class Base : MonoBehaviour
     void WallJumpPlayer() {
         float direction = -Mathf.Sign(xInput);
         if(Input.GetButtonDown("Jump") && walled) {
-            body.velocity = new Vector2((body.velocity.x + WALL_JUMP_PUSHBACK)* direction, JUMP_VELOCITY);      
+            body.velocity = new Vector2((body.velocity.x + WALL_JUMP_PUSHBACK)* direction, JUMP_VELOCITY);
+            sfxManager.PlaySFX(sfxManager.jump);     
         }       
     }
 
@@ -183,10 +188,12 @@ public class Base : MonoBehaviour
     {
         if (parry && Physics2D.OverlapAreaAll(parryHitbox.bounds.min, parryHitbox.bounds.max, enemyMask).Length > 0)
         {
+            sfxManager.PlaySFX(sfxManager.parry);
             FindObjectOfType<HitSTop>().Stop(0.1F);
             body.velocity = new Vector2(body.velocity.x, PARRY_BOUNCE);           
             parried = true;
             parry = false;
+            
         }
         else{
             parry_count -= 0.1F;
@@ -208,6 +215,7 @@ public class Base : MonoBehaviour
             
         if(walled && !jumping && !grounded && !parry){
             animator.Play("Slide");
+
         }
     }
 

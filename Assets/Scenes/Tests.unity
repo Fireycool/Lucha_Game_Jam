@@ -316,7 +316,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!1001 &434637814
+--- !u!1001 &411246612
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -981,7 +981,7 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 1724823085}
-  - {fileID: 434637814}
+  - {fileID: 411246612}
   - {fileID: 386930948}
   - {fileID: 2008565317}
   - {fileID: 583586388}
