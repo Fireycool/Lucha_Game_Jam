@@ -12,11 +12,13 @@ public class Base : MonoBehaviour
 
     [SerializeField] LayerMask groundMask;
     [SerializeField] CircleCollider2D parryHitbox;
+    [SerializeField] BoxCollider2D slamHitbox;
     [SerializeField] LayerMask enemyMask;
 
     [SerializeField] Animator animator;
 
     [SerializeField] float SPEED;
+    [SerializeField] float SLAM_SPEED;
     [SerializeField] float ACCELERATION;
     [Range(0f,1f)]
     [SerializeField] float FRICTION;
@@ -24,8 +26,7 @@ public class Base : MonoBehaviour
     [SerializeField] float AIR_FRICTION;
     [Range(0f,2f)]
     [SerializeField] float GRAVITY;
-    [SerializeField] float FALL_GRAVITY;
-    [SerializeField] float FAST_FALL_GRAVITY;
+
         [Range(0f,1f)]
     [SerializeField] float WALL_GRAVITY;
 
@@ -45,6 +46,7 @@ public class Base : MonoBehaviour
     public bool walking = false;
     public bool jumping = false;
     public bool falling = false;
+    public bool slamming = false;
     public bool walled = false;
     public bool parry = false;
     public bool parriable = false;
@@ -73,6 +75,8 @@ public class Base : MonoBehaviour
             WallJumpPlayer();
 
             ParryPlayer();
+
+            SlamPlayer();
         }
 
         
@@ -86,6 +90,10 @@ public class Base : MonoBehaviour
             parryHitbox.enabled = false;
         }
 
+
+        if(slamming){
+            SlamRead();
+        }
 
         if (grounded){
             parry = false;
@@ -184,6 +192,21 @@ public class Base : MonoBehaviour
         }
     }
 
+    void SlamPlayer()
+    {
+        if (!grounded && Input.GetButtonDown("Fire2"))
+        {
+            if (body.velocity.y < SLAM_SPEED){
+                body.velocity -= new Vector2(0,SLAM_SPEED);
+            }
+            else{
+                body.velocity = new Vector2(body.velocity.x,SLAM_SPEED);
+            }
+            slamming = true;
+            animator.Play("Slam");
+        }
+    }
+
     void ParryRead()
     {
         if (parry && Physics2D.OverlapAreaAll(parryHitbox.bounds.min, parryHitbox.bounds.max, enemyMask).Length > 0)
@@ -200,6 +223,19 @@ public class Base : MonoBehaviour
             if (parry_count <= 0){
                 parry = false;
             }
+        }
+    }
+
+        void SlamRead()
+    {
+        if (slamming && Physics2D.OverlapAreaAll(slamHitbox.bounds.min, slamHitbox.bounds.max, groundMask).Length > 0)
+        {
+            sfxManager.PlaySFX(sfxManager.parry);
+            FindObjectOfType<HitSTop>().Stop(0.1F);
+            body.velocity = new Vector2(body.velocity.x, PARRY_BOUNCE);           
+            parried = true;
+            parry = false;            
+            slamming = false;
         }
     }
 
@@ -233,11 +269,12 @@ public class Base : MonoBehaviour
     void CheckFall(){
         if(body.velocity.y < 0 && !grounded ){
             falling = true;
-            if (!parried && !parry && !walled) 
+            if (!parried && !parry && !walled && !slamming) 
                 animator.Play("Down");
         }
         else{
             falling = false;
+            slamming = false;
         }    
     }
 
