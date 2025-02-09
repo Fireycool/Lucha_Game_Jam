@@ -56,11 +56,20 @@ public class Base : MonoBehaviour
     float xInput; 
     float yInput;
 
+    public int maxHealth = 3;
+    public int health;
+
+    public float KBForce = 2;
+    public float KBCounter;
+    public float KBTime = 1;
+    public bool KnockFromRight;
+
 
     // Start is called before the first frame update
     void Start()
     {
         sfxManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<SFX_Manager>();
+        health = maxHealth;
     }
 
     // Update is called once per frame
@@ -158,7 +167,24 @@ public class Base : MonoBehaviour
                     
             float increment = xInput * ACCELERATION;
             float newSpeed = Mathf.Clamp(body.velocity.x + increment, -SPEED, SPEED);
-            body.velocity = new Vector2(newSpeed, body.velocity.y);
+            
+            if(KBCounter <= 0)
+            {
+                body.velocity = new Vector2(newSpeed, body.velocity.y);
+            }
+            else
+            {
+                if(KnockFromRight)
+                {
+                    body.velocity = new Vector2(-KBForce, KBForce);
+                }
+                else
+                {
+                    body.velocity = new Vector2(KBForce, KBForce);
+                }
+
+                KBCounter -= Time.deltaTime;
+            }
 
             float direction = Mathf.Sign(xInput);
             transform.localScale = new Vector3(direction, 1 , 1);
@@ -285,6 +311,15 @@ public class Base : MonoBehaviour
         else
         {
             return GRAVITY;
+        }
+    }
+
+    public void TakeDamage(int damage)
+    {
+        health -= damage;
+        if (health <= 0)
+        {
+            Destroy(gameObject);
         }
     }
 }

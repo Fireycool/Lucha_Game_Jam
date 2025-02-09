@@ -8,6 +8,8 @@ TagManager:
   - Segmento
   tags:
   - Audio
+  tags:
+  - Parry
   layers:
   - Default
   - TransparentFX
