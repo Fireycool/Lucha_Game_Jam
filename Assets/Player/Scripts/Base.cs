@@ -11,6 +11,8 @@ public class Base : MonoBehaviour
     [SerializeField] CircleCollider2D parryHitbox;
     [SerializeField] LayerMask enemyMask;
 
+    [SerializeField] Animator animator;
+
     [SerializeField] float SPEED;
     [SerializeField] float ACCELERATION;
     [Range(0f,1f)]
@@ -66,6 +68,7 @@ public class Base : MonoBehaviour
         
         if(parry){
             ParryRead();
+            animator.Play("Parry");
         }
         else{
             parryHitbox.enabled = false;
@@ -80,10 +83,12 @@ public class Base : MonoBehaviour
             parriable = true;
 
             body.rotation = 0;
+            
         }
 
         if (parried){
-            body.rotation += 10;
+            animator.Play("Parried");
+            parriable = true;
         }
     }
 
@@ -99,6 +104,7 @@ public class Base : MonoBehaviour
         //Control de Friccion del jugador    
         if (grounded && xInput == 0 && yInput == 0) {
             body.velocity *= new Vector2(FRICTION, 1);
+            animator.Play("Idle");
         }
         else if(!grounded && xInput == 0 && yInput == 0){
             body.velocity *= new Vector2(AIR_FRICTION, 1);
@@ -112,8 +118,10 @@ public class Base : MonoBehaviour
     }
 
     void MovePlayer() {
-        if(Mathf.Abs(xInput) > 0) {
-            
+        if(Mathf.Abs(xInput) > 0) {            
+            if(grounded)
+               animator.Play("Walk");
+                    
             float increment = xInput * ACCELERATION;
             float newSpeed = Mathf.Clamp(body.velocity.x + increment, -SPEED, SPEED);
             body.velocity = new Vector2(newSpeed, body.velocity.y);
@@ -126,13 +134,12 @@ public class Base : MonoBehaviour
     void JumpPlayer() {
         if(Input.GetButtonDown("Jump") && grounded) {
             body.velocity = new Vector2(body.velocity.x, JUMP_VELOCITY);      
-
         }       
     }
 
     void ParryPlayer()
     {
-        if (!grounded && Input.GetButtonDown("Fire1"))
+        if (!grounded && Input.GetButtonDown("Fire1") && parriable)
         {
             parry = true;
             parriable = false;
@@ -164,6 +171,8 @@ public class Base : MonoBehaviour
     void CheckJump(){
         if(body.velocity.y > 0 && !grounded){
             jumping = true;
+            if (!parried && !parry) 
+                animator.Play("Up");
         }
         else{
             jumping = false;
@@ -173,6 +182,8 @@ public class Base : MonoBehaviour
     void CheckFall(){
         if(body.velocity.y < 0 && !grounded){
             falling = true;
+            if (!parried && !parry) 
+                animator.Play("Down");
         }
         else{
             falling = false;

@@ -130,6 +130,7 @@ GameObject:
   m_Component:
   - component: {fileID: 365584536343584455}
   - component: {fileID: 2778401145227214761}
+  - component: {fileID: 8807032953746975891}
   m_Layer: 6
   m_Name: Sprite
   m_TagString: Untagged
@@ -204,6 +205,27 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &8807032953746975891
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4930785662501163004}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 43f1029cb6162d0418200e5493dc0d24, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &7110406097698965200
 GameObject:
   m_ObjectHideFlags: 0
@@ -434,6 +456,7 @@ MonoBehaviour:
   enemyMask:
     serializedVersion: 2
     m_Bits: 512
+  animator: {fileID: 8807032953746975891}
   SPEED: 5
   ACCELERATION: 0.5
   FRICTION: 0.5
