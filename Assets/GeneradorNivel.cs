@@ -26,7 +26,7 @@ public class GeneradorNivel : MonoBehaviour
              GenerarParteNivel();
         }
         DestruirSegmento();
-    }
+    }   
 
     private void GenerarParteNivel(){
         int numeroAleatorio= Random.Range(0, partesNivel.Length);
