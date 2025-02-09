@@ -143,7 +143,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SFXSource: {fileID: 3020454796293651911}
   jump: {fileID: 8300000, guid: 3e968ceec92c94846ac7da091068de5f, type: 3}
-  grab: {fileID: 8300000, guid: 0693096de1ca5aa45bc700ca92ea739e, type: 3}
   parry: {fileID: 8300000, guid: 3efbc18a47c20ca468c1ce6a587177ee, type: 3}
 --- !u!1 &1171206843526896601
 GameObject:
@@ -320,7 +319,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 1
+  m_Radius: 0.7
 --- !u!1 &4930785662501163004
 GameObject:
   m_ObjectHideFlags: 0
