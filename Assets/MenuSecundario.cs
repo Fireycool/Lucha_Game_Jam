@@ -8,7 +8,6 @@ public class MenuSecundario : MonoBehaviour
     // pausa tambien se activa al hacer clic en esc
 
     private bool Pausa = false;
-    public GameObject ButtonUI;
     public GameObject MenuSecundarioUI;
 
     public void Update()
@@ -17,7 +16,6 @@ public class MenuSecundario : MonoBehaviour
         {
             Time.timeScale = 0f;
             Pausa = true;
-            ButtonUI.SetActive(false);
             MenuSecundarioUI.SetActive(true);
         }
 
@@ -25,7 +23,6 @@ public class MenuSecundario : MonoBehaviour
         {
             Time.timeScale = 1f;
             Pausa = false;
-            ButtonUI.SetActive(true);
             MenuSecundarioUI.SetActive(false);
         }
     }
