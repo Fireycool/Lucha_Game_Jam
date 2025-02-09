@@ -5,7 +5,7 @@ public class LavaScript : MonoBehaviour
     public float velocidadSubida = 0.5f;
     public float tiempoHastaSubida = 10f;
     public int damage = 1;
-    private Base playerMovement; // El tipo debe coincidir con el script del jugador
+    public Base playerMovement; // El tipo debe coincidir con el script del jugador
 
     private void Start()
     {
@@ -15,7 +15,7 @@ public class LavaScript : MonoBehaviour
         GameObject player = GameObject.FindGameObjectWithTag("Player"); // Usa tags
         if (player != null)
         {
-            playerMovement = player.GetComponent<Base>(); // Reemplaza "Base" con el nombre real del script
+            playerMovement = player.GetComponent<Base>(); // Reemplaza "Base" con el nombre real del script del jugador
             if (playerMovement == null)
             {
                 Debug.LogError("No se encontró el componente Base en el jugador.");
@@ -26,7 +26,6 @@ public class LavaScript : MonoBehaviour
             Debug.LogError("No se encontró el objeto jugador con la etiqueta 'Player'.");
         }
     }
-
 
     private void EmpezarSubida()
     {
@@ -44,12 +43,14 @@ public class LavaScript : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
+        Debug.Log("Colisión detectada con: " + other.gameObject.name); // Verifica si la colisión ocurre
+
         if (other.CompareTag("Player"))
         {
-            if (playerMovement != null) // ¡Revisa si playerMovement es nulo!
+            if (playerMovement != null)
             {
                 playerMovement.TakeDamage(damage);
-                Debug.Log("¡El jugador ha tocado la lava!");
+                Debug.Log("¡El jugador ha tocado la lava y ha recibido " + damage + " de daño!");
             }
             else
             {
