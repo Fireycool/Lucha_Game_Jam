@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Base : MonoBehaviour
 {
@@ -339,6 +340,7 @@ public class Base : MonoBehaviour
         health -= damage;
         if (health <= 0)
         {
+            SceneManager.LoadSceneAsync("Infinite");
             Destroy(gameObject);
         }
     }

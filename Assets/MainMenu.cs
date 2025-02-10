@@ -7,8 +7,8 @@ public class MainMenu : MonoBehaviour
 {
     public void PlayGame()
     {
-        // Cambiar el número de la escena a la que se quiere ir
-        SceneManager.LoadSceneAsync("Tests");
+        // Cambiar el nï¿½mero de la escena a la que se quiere ir
+        SceneManager.LoadSceneAsync("Infinite");
     }
 
     public void QuitGame()

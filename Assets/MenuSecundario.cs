@@ -48,6 +48,6 @@ public class MenuSecundario : MonoBehaviour
     {
         Time.timeScale = 1f;
         Pausa = false;
-        SceneManager.LoadSceneAsync("Main Menu");
+        SceneManager.LoadSceneAsync("0");
     }
 }
